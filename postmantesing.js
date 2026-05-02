@@ -1,29 +1,26 @@
-const express = require('express');
-const app = express();
-const port = 3000;
-// const tasks = require('./task.json');
+// const app = require('./app');
+
+const express=require('express')
+const app=express()
 const tasks = require('./task.json').tasks;
-
-
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+const PORT = 3000;
 
-// app.listen(port, (err) => {
-//     if (err) {
-//         return console.log('Something bad happened', err);
-//     }
-//     console.log(`Server is listening on ${port}`);
-// });
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
 
+
+app.get('/',(req,res)=>
+{
+res.send("Yes running on 3000")
+})
 
 app.get('/tasks',(req,res)=>
 {
     res.json(tasks)
 })
 
-
-
-// Getting tasks by specific id
 
 app.get('/tasks/:id',(req,res)=>
 {
@@ -42,16 +39,41 @@ res.json(taskdata)
 
 
 
+//post request
+
+// app.post('/tasks', (req, res) => {
+
+//     const { title, description, completed } = req.body;
+
+//     // validation
+//     if (!title || !description || typeof completed !== 'boolean') {
+//         return res.status(400).json({ message: "Invalid input" });
+//     }
+
+//     const newTask = {
+//         id: tasks.length + 1,
+//         title,
+//         description,
+//         completed
+//     };
+
+//     tasks.push(newTask);
+
+//     res.status(201).json(newTask);
+// });
+
+
+
+
+app.get('/tasks', (req, res) => {
+    res.json(tasks);
+});
+
 app.post('/tasks', (req, res) => {
 
     const { title, description, completed } = req.body;
 
-    // ✅ Validation
-    if (
-        !title || title.trim() === '' ||
-        !description || description.trim() === '' ||
-        typeof completed !== 'boolean'
-    ) {
+    if (!title || !description || typeof completed !== 'boolean') {
         return res.status(400).json({ message: "Invalid input" });
     }
 
@@ -68,10 +90,14 @@ app.post('/tasks', (req, res) => {
 });
 
 
+
+
 app.put('/tasks/:id', (req, res) => {
 
     const id = Number(req.params.id);
+
     const task = tasks.find(t => t.id === id);
+
 
     if (!task) {
         return res.status(404).json({ message: "Task not found" });
@@ -79,26 +105,16 @@ app.put('/tasks/:id', (req, res) => {
 
     const { title, description, completed } = req.body;
 
-    // ✅ Validation only if provided
-    if (title !== undefined && title.trim() === '') {
-        return res.status(400).json({ message: "Invalid title" });
-    }
-
-    if (description !== undefined && description.trim() === '') {
-        return res.status(400).json({ message: "Invalid description" });
-    }
-
-    if (completed !== undefined && typeof completed !== 'boolean') {
-        return res.status(400).json({ message: "Invalid completed status" });
-    }
-
-    // ✅ Update
+    // 🧠 Updates only if values are provided
     if (title !== undefined) task.title = title;
     if (description !== undefined) task.description = description;
     if (completed !== undefined) task.completed = completed;
 
     res.json(task);
 });
+
+
+
 
 
 app.delete('/tasks/:id', (req, res) => {
@@ -121,6 +137,3 @@ app.delete('/tasks/:id', (req, res) => {
         data: deletedTask[0]
     });
 });
-
-
-module.exports = app;
