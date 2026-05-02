@@ -1,20 +1,30 @@
 # Task Manager API
 
-This project is a RESTful API built using Node.js and Express.
+## 📌 Overview
+This project is a RESTful API built using Node.js and Express.js.  
+It allows users to manage tasks with full CRUD functionality using in-memory storage.
 
-## Features
+---
+
+## 🚀 Features
 - Get all tasks
 - Get task by ID
-- Create new task
-- Update task
-- Delete task
+- Create a new task
+- Update an existing task
+- Delete a task
+- Input validation and error handling
 
-## Tech Stack
+---
+
+## 🛠 Tech Stack
 - Node.js
 - Express.js
 
-## Run Project
+---
 
+## ⚙️ Setup Instructions
+
+### 1. Clone the repository
 ```bash
-npm install
-npm run dev
+git clone <your-repo-link>
+cd task-manager
